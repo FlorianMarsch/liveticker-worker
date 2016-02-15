@@ -17,6 +17,9 @@ public class SchedulerMain {
     final static Logger logger = LoggerFactory.getLogger(SchedulerMain.class);
     
     public static void main(String[] args) throws Exception {
+    	
+    	logger.info("Start");
+    	
         Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
 
         scheduler.start();
