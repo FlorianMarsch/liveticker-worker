@@ -1,5 +1,4 @@
-package com.heroku.devcenter;
-
+package com.heroku.devcenter.gameday;
 
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
@@ -10,12 +9,26 @@ import java.net.URL;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class GameDayFinder {
+public class Gameday {
 
-	private String gamedayUrl = "http://feedmonster.iliga.de/feeds/il/de/competitions/1/1271/matchdaysOverview.json";
+	final static Logger logger = LoggerFactory.getLogger(Gameday.class);
+	  
+	private int number;
 
-	public String getCurrentGameDay() {
+	public int getNumber() {
+		return number;
+	}
+
+	public void setNumber(int number) {
+		this.number = number;
+	}
+	
+	private static String gamedayUrl = "http://feedmonster.iliga.de/feeds/il/de/competitions/1/1271/matchdaysOverview.json";
+
+	public static Gameday getCurrentGameDay() {
 		try {
 			String content = loadFile(gamedayUrl);
 			JSONArray days = new JSONObject(content).getJSONArray("matchdays");
@@ -24,8 +37,13 @@ public class GameDayFinder {
 				JSONObject tempDay = days.getJSONObject(i);
 				if (tempDay.getBoolean("isCurrentMatchday")) {
 
-					return tempDay.getString("name").split(". ")[0];
-
+					String temp= tempDay.getString("name").split(". ")[0];
+					Gameday response = new Gameday();
+					response.setNumber(Integer.valueOf(temp)-1);
+					if (logger.isDebugEnabled()) {
+						logger.debug("run gameday"+response.getNumber());
+					}
+					return response;
 				}
 			}
 
@@ -35,7 +53,7 @@ public class GameDayFinder {
 		}
 	}
 
-	private String loadFile(String url) {
+	private static String loadFile(String url) {
 
 		StringBuffer tempReturn = new StringBuffer();
 		try {
@@ -58,5 +76,4 @@ public class GameDayFinder {
 		}
 		return tempReturn.toString();
 	}
-
 }
