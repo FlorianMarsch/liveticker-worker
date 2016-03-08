@@ -2,7 +2,7 @@ package com.heroku.devcenter;
 
 
 import static org.quartz.JobBuilder.newJob;
-import static org.quartz.SimpleScheduleBuilder.repeatMinutelyForever;
+import static org.quartz.SimpleScheduleBuilder.*;
 import static org.quartz.TriggerBuilder.newTrigger;
 
 import javax.persistence.EntityManager;
@@ -27,15 +27,15 @@ public class SchedulerMain {
         Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
 
         scheduler.start();
-
-        JobDetail jobDetail = newJob(LiveJob.class).build();
         
-        Trigger trigger = newTrigger()
+        Trigger minutely = newTrigger()
                 .startNow()
                 .withSchedule(repeatMinutelyForever(1))
                 .build();
 
-        scheduler.scheduleJob(jobDetail, trigger);
+        JobDetail liveJobDetail = newJob(LiveJob.class).build();
+        
+        scheduler.scheduleJob(liveJobDetail, minutely);
     }
 
 

@@ -8,13 +8,13 @@ import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.heroku.devcenter.db.EventService;
 import com.heroku.devcenter.gameday.Gameday;
 import com.heroku.devcenter.liveticker.Event;
 import com.heroku.devcenter.liveticker.LiveTicker;
-import com.heroku.devcenter.queue.QueueFactory;
+import com.heroku.devcenter.twitter.TweetCreator;
+import com.heroku.devcenter.twitter.Connection;
+import com.heroku.devcenter.twitter.Tweet;
 
 public class LiveJob implements Job {
 
@@ -40,18 +40,11 @@ public class LiveJob implements Job {
 			logger.info("quit processing");
 			return;
 		}
-		ObjectMapper mapper = new ObjectMapper();
-		QueueFactory queue = new QueueFactory("goals");
-		for (Event event : newOnes) {
-			byte[] json;
-			try {
-				json = mapper.writeValueAsBytes(event);
-				queue.publish(json );
-			} catch (JsonProcessingException e) {
-				e.printStackTrace();
-			}
+		TweetCreator mc = new TweetCreator(newOnes);
+		Connection con = new Connection();
+		for (Tweet tweet : mc.getTweets()) {
+			con.tweet(tweet.getText());
 		}
-		queue.close();
 		logger.info("end processing");
 	}
 }

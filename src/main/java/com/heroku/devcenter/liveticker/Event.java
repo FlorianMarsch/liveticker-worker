@@ -21,6 +21,21 @@ public class Event {
 	private String type;
 	
 	@Column
+	private String owner;
+	
+	@Column
+	private String gameTag;
+	
+	@Column
+	private String result;
+	
+	@Column
+	private Boolean fakeGame;
+	
+	@Column
+	private Boolean byeGame;
+		
+	@Column
 	private Integer gameday;
 	
 	@Column
@@ -61,11 +76,42 @@ public class Event {
 	public void setName(String name) {
 		this.name = name;
 	}
+
 	public String getType() {
 		return type;
 	}
 	public void setType(String type) {
 		this.type = type;
+	}
+	public String getOwner() {
+		return owner;
+	}
+	public void setOwner(String owner) {
+		this.owner = owner;
+	}
+	public String getGameTag() {
+		return gameTag;
+	}
+	public void setGameTag(String gameTag) {
+		this.gameTag = gameTag;
+	}
+	public String getResult() {
+		return result;
+	}
+	public void setResult(String result) {
+		this.result = result;
+	}
+	public Boolean getFakeGame() {
+		return fakeGame;
+	}
+	public void setFakeGame(Boolean fakeGame) {
+		this.fakeGame = fakeGame;
+	}
+	public Boolean getByeGame() {
+		return byeGame;
+	}
+	public void setByeGame(Boolean byeGame) {
+		this.byeGame = byeGame;
 	}
 	public Integer getGameday() {
 		return gameday;
@@ -79,4 +125,5 @@ public class Event {
 	public void setCreationDate(Date creationDate) {
 		this.creationDate = creationDate;
 	}
+	
 }

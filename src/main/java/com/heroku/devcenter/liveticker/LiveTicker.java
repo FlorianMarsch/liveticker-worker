@@ -19,50 +19,36 @@ import com.heroku.devcenter.gameday.Gameday;
 
 public class LiveTicker {
 
-	public LiveTicker(){
-		
+	public LiveTicker() {
+
 	}
-	
+
 	public Set<Event> getGoals(Gameday aMatchday) {
-		Integer id = aMatchday.getNumber() + 5662927;
-		String content = loadFile("http://feedmonster.iliga.de/feeds/il/de/competitions/1/1271/matchdays/"
-				+ id + ".json");
-		
+		Integer gameday = aMatchday.getNumber();
+		String content = loadFile("http://fussballmanager.herokuapp.com/live/" + gameday);
+
 		Set<Event> eventList = new HashSet<Event>();
 		try {
 			JSONObject json = new JSONObject(content);
-			JSONArray kickoffs = json.getJSONArray("kickoffs");
+			JSONArray data = json.getJSONArray("data");
 
-			for (int k = 0; k < kickoffs.length(); k++) {
-				JSONObject element = kickoffs.getJSONObject(k);
-				JSONArray groups = element.getJSONArray("groups");
-				for (int gr = 0; gr < groups.length(); gr++) {
-					JSONObject group = groups.getJSONObject(gr);
-					JSONArray matches = group.getJSONArray("matches");
-					for (int m = 0; m < matches.length(); m++) {
-						JSONObject match = matches.getJSONObject(m);
-						JSONArray goals = match.getJSONArray("goals");
-						for (int go = 0; go < goals.length(); go++) {
-							JSONObject goal = goals.getJSONObject(go);
-							String type = goal.getString("type");
-							String eventId = goal.getString("eventId");
-							String player = goal.getJSONObject("player")
-									.getString("name");
+			for (int i = 0; i < data.length(); i++) {
 
-							String norm = Normalizer.normalize(player, Normalizer.Form.NFD);
-							norm = norm.replaceAll("[^\\p{ASCII}]", "");
-							
-							Event e = new Event();
-							e.setId(eventId);
-							e.setType(type);
-							e.setName(norm);
-							e.setGameday(aMatchday.getNumber());
-							e.setCreationDate(new Date());
-							eventList.add(e);
+				JSONObject goal = data.getJSONObject(i);	
+				
+				Event e = new Event();
+				e.setId(goal.getString("id"));
+				e.setName(goal.getString("name"));
+				e.setType(goal.getString("type"));
+				e.setOwner(goal.getString("owner"));
+				e.setGameTag(goal.getString("gameTag"));
+				e.setResult(goal.getString("result"));
+				e.setFakeGame(goal.getBoolean("fakeGame"));
+				e.setByeGame(goal.getBoolean("byeGame"));
+				e.setGameday(gameday);
+				e.setCreationDate(new Date());
+				eventList.add(e);
 
-						}
-					}
-				}
 			}
 
 		} catch (JSONException e) {
@@ -71,7 +57,6 @@ public class LiveTicker {
 		}
 		return eventList;
 	}
-	
 
 	private String loadFile(String url) {
 
@@ -79,8 +64,7 @@ public class LiveTicker {
 		try {
 			URL u = new URL(url);
 			InputStream is = u.openStream();
-			DataInputStream dis = new DataInputStream(new BufferedInputStream(
-					is));
+			DataInputStream dis = new DataInputStream(new BufferedInputStream(is));
 			String s;
 
 			while ((s = dis.readLine()) != null) {
