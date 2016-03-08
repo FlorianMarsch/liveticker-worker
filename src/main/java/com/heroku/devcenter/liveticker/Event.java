@@ -79,5 +79,4 @@ public class Event {
 	public void setCreationDate(Date creationDate) {
 		this.creationDate = creationDate;
 	}
-	
 }
