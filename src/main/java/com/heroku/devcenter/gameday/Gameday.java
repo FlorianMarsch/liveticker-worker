@@ -39,7 +39,7 @@ public class Gameday {
 
 					String temp= tempDay.getString("name").split(". ")[0];
 					Gameday response = new Gameday();
-					response.setNumber(Integer.valueOf(temp)-1);
+					response.setNumber(Integer.valueOf(temp));
 					if (logger.isDebugEnabled()) {
 						logger.debug("run gameday"+response.getNumber());
 					}
