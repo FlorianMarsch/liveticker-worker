@@ -18,8 +18,10 @@ public class QueueFactory {
 	final static Logger logger = LoggerFactory.getLogger(QueueFactory.class);
 
 	private Channel channel;
-
-	public QueueFactory() {
+	private String name;
+	
+	public QueueFactory(String aName) {
+		name = aName;
 
 		String uri = System.getenv("CLOUDAMQP_URL");
 		if (logger.isDebugEnabled()) {
@@ -52,7 +54,7 @@ public class QueueFactory {
 			logger.debug("send message " + aMessage);
 		}
 		try {
-			channel.basicPublish("", "goals", null, aMessage);
+			channel.basicPublish("", name, null, aMessage);
 			return Boolean.TRUE;
 		} catch (IOException e) {
 			e.printStackTrace();

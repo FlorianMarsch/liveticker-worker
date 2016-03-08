@@ -25,7 +25,7 @@ public class LiveJob implements Job {
 	private EventService service = new EventService();
 
 	public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-		logger.info("execute new turn around");
+		logger.info("execute new turn around and check live results");
 		Gameday currentGameDay = Gameday.getCurrentGameDay();
 		if (logger.isDebugEnabled()) {
 			logger.debug("detect gameday : " + currentGameDay.getNumber());
@@ -41,7 +41,7 @@ public class LiveJob implements Job {
 			return;
 		}
 		ObjectMapper mapper = new ObjectMapper();
-		QueueFactory queue = new QueueFactory();
+		QueueFactory queue = new QueueFactory("goals");
 		for (Event event : newOnes) {
 			byte[] json;
 			try {
