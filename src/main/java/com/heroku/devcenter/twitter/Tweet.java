@@ -38,6 +38,10 @@ public class Tweet {
 			text = name + " ist beflügelt durch das Freilos von " + owner
 					+" #comunioLDC " + tag ;
 		}
+		if (type.equalsIgnoreCase("Error")) {
+			text = "Fehlalarm : Es war doch nicht "+ name + " für " + owner
+					+ " #comunioLDC " + tag ;
+		}
 	}
 
 	public String getText() {

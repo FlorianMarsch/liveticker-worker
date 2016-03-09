@@ -41,10 +41,10 @@ public class LiveTicker {
 				e.setName(goal.getString("name"));
 				e.setType(goal.getString("type"));
 				e.setOwner(goal.getString("owner"));
-				e.setGameTag(goal.getString("gameTag"));
+				e.setGameTag(goal.getString("gameHashTag"));
 				e.setResult(goal.getString("result"));
-				e.setFakeGame(goal.getBoolean("fakeGame"));
-				e.setByeGame(goal.getBoolean("byeGame"));
+				e.setFakeGame(goal.getBoolean("fake"));
+				e.setByeGame(goal.getBoolean("bye"));
 				e.setGameday(gameday);
 				e.setCreationDate(new Date());
 				eventList.add(e);

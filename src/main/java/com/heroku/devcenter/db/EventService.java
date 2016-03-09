@@ -1,14 +1,17 @@
 package com.heroku.devcenter.db;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.TypedQuery;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.heroku.devcenter.gameday.Gameday;
 import com.heroku.devcenter.liveticker.Event;
 
 public class EventService {
@@ -25,6 +28,11 @@ public class EventService {
 		}
 
 		Set<Event> response = new HashSet<Event>();
+		if(someEvents.isEmpty()){
+			return response;
+		}
+		
+		
 
 		for (Event event : someEvents) {
 			EntityTransaction transaction = null;
@@ -61,6 +69,50 @@ public class EventService {
 
 		if (logger.isDebugEnabled()) {
 			logger.debug(response.size() + " new Events");
+		}
+		return response;
+	}
+
+	public Set<Event> deleteAndReturnLostEvents(Set<Event> someEvents,Gameday currentGameDay) {
+		
+		
+		Set<Event> response = new HashSet<Event>();
+		
+		if(someEvents.isEmpty()){
+			return response;
+		}
+		
+		
+		EntityTransaction transaction = null;
+		try {
+			transaction = em.getTransaction();
+			transaction.begin();
+			Set<String> someIds = new HashSet<String>();
+			for (Event event : someEvents) {
+				someIds.add(event.getId());
+			}
+			
+			TypedQuery<Event> query = em.createQuery("select x from Event x where x.gameday = :gameday  and not x.id in :list", Event.class);
+			query.setParameter("gameday", currentGameDay.getNumber());
+			query.setParameter("list", someIds);
+			
+			List<Event> lost = query.getResultList();
+			for (Event event : lost) {
+				event.setType("error");
+				em.remove(event);
+				response.add(event);
+			}
+			
+			transaction.commit();
+		} catch (Exception e) {
+
+			logger.error("Error : " + e.getMessage());
+
+			if (transaction != null && transaction.isActive()) {
+				transaction.rollback();
+			}
+			em.close();
+			em = emFactory.produceEntityManager();
 		}
 		return response;
 	}

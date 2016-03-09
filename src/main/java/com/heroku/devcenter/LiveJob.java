@@ -1,5 +1,6 @@
 package com.heroku.devcenter;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.quartz.Job;
@@ -36,11 +37,18 @@ public class LiveJob implements Job {
 		}
 		Set<Event> newOnes = service.saveAndReturnNewEvents(liveTickerEvents);
 		logger.info("filter " + newOnes.size() + " new Events");
-		if (newOnes.isEmpty()) {
+		Set<Event> lostOnes = service.deleteAndReturnLostEvents(liveTickerEvents,currentGameDay);
+		logger.info("find " + lostOnes.size() + " wrong Events");
+		
+		Set<Event> events = new HashSet<Event>();
+		events.addAll(newOnes);
+		events.addAll(lostOnes);
+		
+		if (events.isEmpty()) {
 			logger.info("quit processing");
 			return;
 		}
-		TweetCreator mc = new TweetCreator(newOnes);
+		TweetCreator mc = new TweetCreator(events);
 		Connection con = new Connection();
 		for (Tweet tweet : mc.getTweets()) {
 			con.tweet(tweet.getText());
