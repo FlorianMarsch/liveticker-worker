@@ -20,7 +20,7 @@ public class MessageVariete {
 		goal.add("Da landet der Ball im Kasten");
 		
 		penalty.add("11 Meter");
-		penalty.add("Strafsto�");
+		penalty.add("Strafstoß");
 		penalty.add("Elfer");
 		penalty.add("Elfmeter");
 
