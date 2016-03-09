@@ -11,8 +11,10 @@ import org.slf4j.LoggerFactory;
 
 import com.heroku.devcenter.db.EventService;
 import com.heroku.devcenter.gameday.Gameday;
+import com.heroku.devcenter.gameday.SwitchService;
 import com.heroku.devcenter.liveticker.Event;
 import com.heroku.devcenter.liveticker.LiveTicker;
+import com.heroku.devcenter.mail.Mail;
 import com.heroku.devcenter.twitter.TweetCreator;
 import com.heroku.devcenter.twitter.Connection;
 import com.heroku.devcenter.twitter.Tweet;
@@ -21,16 +23,25 @@ public class LiveJob implements Job {
 
 	final static Logger logger = LoggerFactory.getLogger(LiveJob.class);
 
-	private LiveTicker liveTicker = new LiveTicker();
-
-	private EventService service = new EventService();
 
 	public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+		EventService service = new EventService();
+		LiveTicker liveTicker = new LiveTicker();
+		SwitchService switchService = new SwitchService();
+
 		logger.info("execute new turn around and check live results");
 		Gameday currentGameDay = Gameday.getCurrentGameDay();
 		if (logger.isDebugEnabled()) {
 			logger.debug("detect gameday : " + currentGameDay.getNumber());
 		}
+		
+		Integer lastGameDay = switchService.getLastGameDay(currentGameDay);
+		Boolean gameDayChanged = !currentGameDay.isSame(lastGameDay);
+		if(gameDayChanged){
+			Mail mail = new Mail(lastGameDay);
+			mail.send();
+		}
+		
 		Set<Event> liveTickerEvents = liveTicker.getGoals(currentGameDay);
 		if (logger.isDebugEnabled()) {
 			logger.debug("recive " + liveTickerEvents.size() + " Events");

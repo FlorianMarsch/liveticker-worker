@@ -76,4 +76,8 @@ public class Gameday {
 		}
 		return tempReturn.toString();
 	}
+
+	public Boolean isSame(Integer lastGameDay) {
+		return lastGameDay.equals(getNumber());
+	}
 }
