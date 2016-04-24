@@ -29,7 +29,7 @@ public class TweetJob implements Job {
 		LiveTicker liveTicker = new LiveTicker();
 		SwitchService switchService = new SwitchService();
 
-		logger.info("execute new turn around and check live results");
+		logger.info("execute new turn around and tweet live results");
 		Gameday currentGameDay = Gameday.getCurrentGameDay();
 		if (logger.isDebugEnabled()) {
 			logger.debug("detect gameday : " + currentGameDay.getNumber());
