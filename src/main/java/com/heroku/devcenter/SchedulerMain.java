@@ -36,6 +36,12 @@ public class SchedulerMain {
         
         JobDetail liveJobDetail = newJob(LiveTickerJob.class).build();
         scheduler.scheduleJob(liveJobDetail, minutely);
+    
+        minutely = newTrigger()
+                .startNow()
+                .withSchedule(repeatMinutelyForever(1))
+                .build();
+        
         
         JobDetail tweetJobDetail = newJob(TweetJob.class).build();
         scheduler.scheduleJob(tweetJobDetail, minutely);
