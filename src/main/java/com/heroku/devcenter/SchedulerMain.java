@@ -33,7 +33,7 @@ public class SchedulerMain {
                 .withSchedule(repeatMinutelyForever(1))
                 .build();
 
-        JobDetail liveJobDetail = newJob(LiveJob.class).build();
+        JobDetail liveJobDetail = newJob(TweetJob.class).build();
         
         scheduler.scheduleJob(liveJobDetail, minutely);
     }

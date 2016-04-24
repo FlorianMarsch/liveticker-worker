@@ -19,9 +19,9 @@ import com.heroku.devcenter.twitter.TweetCreator;
 import com.heroku.devcenter.twitter.Connection;
 import com.heroku.devcenter.twitter.Tweet;
 
-public class LiveJob implements Job {
+public class TweetJob implements Job {
 
-	final static Logger logger = LoggerFactory.getLogger(LiveJob.class);
+	final static Logger logger = LoggerFactory.getLogger(TweetJob.class);
 
 
 	public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
