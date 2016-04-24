@@ -44,7 +44,7 @@ public class SchedulerMain {
         
         
         JobDetail tweetJobDetail = newJob(TweetJob.class).build();
-//        scheduler.scheduleJob(tweetJobDetail, minutely);
+        scheduler.scheduleJob(tweetJobDetail, minutely);
     }
 
 
