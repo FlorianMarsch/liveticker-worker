@@ -28,8 +28,11 @@ public class TickerService {
 	final static Logger logger = LoggerFactory.getLogger(TweetJob.class);
 
 	Map<String, Tick> map = new HashMap<String, Tick>();
-
-	public TickerService() {
+	Gameday matchday;
+	
+	
+	public TickerService(Gameday aMatchday) {
+		matchday = aMatchday;
 		try {
 			String all = loadFile("http://fussballmanager.herokuapp.com/Tick");
 			JSONObject data = new JSONObject(all);
@@ -43,7 +46,11 @@ public class TickerService {
 				tempTick.setEvent(tick.getString("event"));
 				tempTick.setMatchdayNumber(tick.getInt("matchdayNumber"));
 				tempTick.setId(tick.getString("id"));
-				map.put(tempTick.getExternId(), tempTick);
+				if(tempTick.getMatchdayNumber() == aMatchday.getNumber()){
+					map.put(tempTick.getExternId(), tempTick);
+					
+				}
+				
 			}
 
 		} catch (JSONException e) {
@@ -54,13 +61,13 @@ public class TickerService {
 		logger.info("already " + map.size() + " ticks here");
 	}
 
-	public List<Tick> getLiveTickerEvents(Gameday aMatchday) {
-		String content = getLiveTickerText(aMatchday);
-		return getLiveTickerEvents(content, aMatchday);
+	public List<Tick> getLiveTickerEvents() {
+		String content = getLiveTickerText();
+		return getLiveTickerEvents(content);
 	}
 
-	public String getLiveTickerText(Gameday aMatchday) {
-		Integer id = aMatchday.getNumber() + 5662927;
+	public String getLiveTickerText() {
+		Integer id = matchday.getNumber() + 5662927;
 		String content = loadFile(
 				"http://feedmonster.iliga.de/feeds/il/de/competitions/1/1271/matchdays/" + id + ".json");
 		return content;
@@ -89,7 +96,7 @@ public class TickerService {
 		return tempReturn.toString();
 	}
 
-	public List<Tick> getLiveTickerEvents(String content, Gameday aMatchday) {
+	public List<Tick> getLiveTickerEvents(String content) {
 
 		List<Tick> eventList = new ArrayList<Tick>();
 		try {
@@ -118,7 +125,7 @@ public class TickerService {
 							e.setExternId(eventId);
 							e.setEvent(type);
 							e.setName(norm);
-							e.setMatchdayNumber(aMatchday.getNumber());
+							e.setMatchdayNumber(matchday.getNumber());
 							eventList.add(e);
 
 						}

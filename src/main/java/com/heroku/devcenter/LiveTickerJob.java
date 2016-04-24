@@ -20,14 +20,14 @@ public class LiveTickerJob implements Job {
 
 
 	public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-		TickerService service = new TickerService();
 
 		logger.info("execute new turn around and check live results");
 		Gameday currentGameDay = Gameday.getCurrentGameDay();
 		if (logger.isDebugEnabled()) {
 			logger.debug("detect gameday : " + currentGameDay.getNumber());
 		}
-		List<Tick> liveTickerEvents = service.getLiveTickerEvents(currentGameDay);
+		TickerService service = new TickerService(currentGameDay);
+		List<Tick> liveTickerEvents = service.getLiveTickerEvents();
 		for (Tick tick : liveTickerEvents) {
 			try {
 				service.save(tick);
