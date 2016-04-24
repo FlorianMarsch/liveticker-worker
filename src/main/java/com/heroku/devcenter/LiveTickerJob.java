@@ -28,6 +28,7 @@ public class LiveTickerJob implements Job {
 		}
 		TickerService service = new TickerService(currentGameDay);
 		List<Tick> liveTickerEvents = service.getLiveTickerEvents();
+		logger.info("recive "+liveTickerEvents.size()+" events");
 		for (Tick tick : liveTickerEvents) {
 			try {
 				service.save(tick);
@@ -36,6 +37,7 @@ public class LiveTickerJob implements Job {
 			}
 		}
 		List<Tick> lost = service.getLost(liveTickerEvents);
+		logger.info("lost "+lost.size()+" events");
 		for (Tick tick : lost) {
 			try {
 				service.delete(tick);
