@@ -15,6 +15,7 @@ import com.heroku.devcenter.gameday.SwitchService;
 import com.heroku.devcenter.liveticker.Event;
 import com.heroku.devcenter.liveticker.LiveTicker;
 import com.heroku.devcenter.mail.Mail;
+import com.heroku.devcenter.pushbullet.PushbulletConnection;
 import com.heroku.devcenter.twitter.TweetCreator;
 import com.heroku.devcenter.twitter.Connection;
 import com.heroku.devcenter.twitter.Tweet;
@@ -61,8 +62,11 @@ public class TweetJob implements Job {
 		}
 		TweetCreator mc = new TweetCreator(events);
 		Connection con = new Connection();
+		PushbulletConnection push = new PushbulletConnection();
 		for (Tweet tweet : mc.getTweets()) {
-			con.tweet(tweet.getText());
+			String message = tweet.getText();
+			con.tweet(message);
+			push.send(message);
 		}
 		logger.info("end processing");
 	}
