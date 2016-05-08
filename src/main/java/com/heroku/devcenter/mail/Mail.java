@@ -16,7 +16,7 @@ public class Mail {
 	private Email email;
 	
 	public Mail(Integer aGameday) {
-		String html = loadFile("http://fussballmanager.herokuapp.com/overview/" + aGameday);
+		String html = loadFile("http://fussballmanager.herokuapp.com/process/" + aGameday);
 		
 		email = new Email();
 		String target = System.getenv("SENDGRID_TARGET");
