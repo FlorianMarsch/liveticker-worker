@@ -1,4 +1,4 @@
-package com.heroku.devcenter.db;
+package de.florianmarsch.liveticker.db;
 
 import java.util.HashSet;
 import java.util.List;
@@ -11,8 +11,8 @@ import javax.persistence.TypedQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.heroku.devcenter.gameday.Gameday;
-import com.heroku.devcenter.liveticker.Event;
+import de.florianmarsch.liveticker.gameday.Gameday;
+import de.florianmarsch.liveticker.liveticker.Event;
 
 public class EventService {
 

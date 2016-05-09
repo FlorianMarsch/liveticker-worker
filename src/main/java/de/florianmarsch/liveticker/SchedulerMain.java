@@ -1,4 +1,4 @@
-package com.heroku.devcenter;
+package de.florianmarsch.liveticker;
 
 
 import static org.quartz.JobBuilder.newJob;
@@ -14,7 +14,7 @@ import org.quartz.impl.StdSchedulerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.heroku.devcenter.db.EmFactory;
+import de.florianmarsch.liveticker.db.EmFactory;
 
 public class SchedulerMain {
 

@@ -1,4 +1,4 @@
-package com.heroku.devcenter.pushbullet;
+package de.florianmarsch.liveticker.pushbullet;
 import java.io.IOException;
 
 import org.apache.http.auth.AuthScope;

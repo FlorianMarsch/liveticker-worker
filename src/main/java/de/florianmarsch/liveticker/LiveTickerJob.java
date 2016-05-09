@@ -1,4 +1,4 @@
-package com.heroku.devcenter;
+package de.florianmarsch.liveticker;
 
 import java.io.IOException;
 import java.util.List;
@@ -10,9 +10,9 @@ import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.heroku.devcenter.gameday.Gameday;
-import com.heroku.devcenter.liveticker.Tick;
-import com.heroku.devcenter.liveticker.TickerService;
+import de.florianmarsch.liveticker.gameday.Gameday;
+import de.florianmarsch.liveticker.liveticker.Tick;
+import de.florianmarsch.liveticker.liveticker.TickerService;
 
 public class LiveTickerJob implements Job {
 

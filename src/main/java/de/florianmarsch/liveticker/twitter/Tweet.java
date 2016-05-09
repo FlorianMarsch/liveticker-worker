@@ -1,6 +1,6 @@
-package com.heroku.devcenter.twitter;
+package de.florianmarsch.liveticker.twitter;
 
-import com.heroku.devcenter.liveticker.Event;
+import de.florianmarsch.liveticker.liveticker.Event;
 
 public class Tweet {
 

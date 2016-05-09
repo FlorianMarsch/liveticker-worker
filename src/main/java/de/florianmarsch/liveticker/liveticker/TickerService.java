@@ -1,4 +1,4 @@
-package com.heroku.devcenter.liveticker;
+package de.florianmarsch.liveticker.liveticker;
 
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
@@ -21,8 +21,8 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.heroku.devcenter.TweetJob;
-import com.heroku.devcenter.gameday.Gameday;
+import de.florianmarsch.liveticker.TweetJob;
+import de.florianmarsch.liveticker.gameday.Gameday;
 
 public class TickerService {
 	final static Logger logger = LoggerFactory.getLogger(TweetJob.class);

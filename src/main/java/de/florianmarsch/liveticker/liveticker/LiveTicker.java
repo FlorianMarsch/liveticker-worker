@@ -1,4 +1,4 @@
-package com.heroku.devcenter.liveticker;
+package de.florianmarsch.liveticker.liveticker;
 
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
@@ -15,7 +15,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.heroku.devcenter.gameday.Gameday;
+import de.florianmarsch.liveticker.gameday.Gameday;
 
 public class LiveTicker {
 

@@ -1,4 +1,4 @@
-package com.heroku.devcenter.liveticker;
+package de.florianmarsch.liveticker.liveticker;
 
 public class Tick {
 

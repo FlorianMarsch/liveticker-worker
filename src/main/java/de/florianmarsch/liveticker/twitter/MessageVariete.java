@@ -1,4 +1,4 @@
-package com.heroku.devcenter.twitter;
+package de.florianmarsch.liveticker.twitter;
 
 import java.util.ArrayList;
 import java.util.Collections;

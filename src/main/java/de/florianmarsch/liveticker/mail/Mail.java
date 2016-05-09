@@ -1,4 +1,4 @@
-package com.heroku.devcenter.mail;
+package de.florianmarsch.liveticker.mail;
 
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;

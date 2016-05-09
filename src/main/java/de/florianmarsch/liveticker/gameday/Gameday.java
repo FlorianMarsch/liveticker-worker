@@ -1,4 +1,4 @@
-package com.heroku.devcenter.gameday;
+package de.florianmarsch.liveticker.gameday;
 
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;

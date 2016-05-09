@@ -1,4 +1,4 @@
-package com.heroku.devcenter;
+package de.florianmarsch.liveticker;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -9,16 +9,16 @@ import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.heroku.devcenter.db.EventService;
-import com.heroku.devcenter.gameday.Gameday;
-import com.heroku.devcenter.gameday.SwitchService;
-import com.heroku.devcenter.liveticker.Event;
-import com.heroku.devcenter.liveticker.LiveTicker;
-import com.heroku.devcenter.mail.Mail;
-import com.heroku.devcenter.pushbullet.PushbulletConnection;
-import com.heroku.devcenter.twitter.TweetCreator;
-import com.heroku.devcenter.twitter.Connection;
-import com.heroku.devcenter.twitter.Tweet;
+import de.florianmarsch.liveticker.db.EventService;
+import de.florianmarsch.liveticker.gameday.Gameday;
+import de.florianmarsch.liveticker.gameday.SwitchService;
+import de.florianmarsch.liveticker.liveticker.Event;
+import de.florianmarsch.liveticker.liveticker.LiveTicker;
+import de.florianmarsch.liveticker.mail.Mail;
+import de.florianmarsch.liveticker.pushbullet.PushbulletConnection;
+import de.florianmarsch.liveticker.twitter.TweetCreator;
+import de.florianmarsch.liveticker.twitter.Connection;
+import de.florianmarsch.liveticker.twitter.Tweet;
 
 public class TweetJob implements Job {
 

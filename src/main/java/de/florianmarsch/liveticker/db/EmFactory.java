@@ -1,4 +1,4 @@
-package com.heroku.devcenter.db;
+package de.florianmarsch.liveticker.db;
 
 import java.util.HashMap;
 import java.util.Map;

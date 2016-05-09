@@ -1,10 +1,10 @@
-package com.heroku.devcenter.twitter;
+package de.florianmarsch.liveticker.twitter;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import com.heroku.devcenter.liveticker.Event;
+import de.florianmarsch.liveticker.liveticker.Event;
 
 public class TweetCreator {
 

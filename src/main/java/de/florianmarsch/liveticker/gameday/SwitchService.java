@@ -1,4 +1,4 @@
-package com.heroku.devcenter.gameday;
+package de.florianmarsch.liveticker.gameday;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -6,7 +6,7 @@ import javax.persistence.EntityTransaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.heroku.devcenter.db.EmFactory;
+import de.florianmarsch.liveticker.db.EmFactory;
 
 public class SwitchService {
 
