@@ -1,32 +1,35 @@
 package de.florianmarsch.liveticker.twitter;
 
-import twitter4j.Status;
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
-import twitter4j.conf.ConfigurationBuilder;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.json.JSONObject;
 
 public class Connection {
 
-	private Twitter twitter;
+	private CloseableHttpClient client;
 	
 	public Connection(){
-		ConfigurationBuilder cb = new ConfigurationBuilder();
-		cb.setDebugEnabled(true)
-		  .setOAuthConsumerKey(System.getenv("TWITTER_CONSUMER_KEY"))
-		  .setOAuthConsumerSecret(System.getenv("TWITTER_CONSUMER_SECRET"))
-		  .setOAuthAccessToken(System.getenv("TWITTER_ACCESS_TOKEN"))
-		  .setOAuthAccessTokenSecret(System.getenv("TWITTER_ACCESS_TOKEN_SECRET"));
-		TwitterFactory tf = new TwitterFactory(cb.build());
-		twitter = tf.getInstance();
+		client = HttpClients.createDefault();
+
 	
 	}
 	
 	
 	public void tweet(String aMessage){
 		try {
-			Status status = twitter.updateStatus(aMessage);
-		} catch (TwitterException e) {
+			HttpPost httppost = new HttpPost("http://social-system-api.herokuapp.com/api/twitter");
+			httppost.setHeader("Content-Type", "application/json");
+			JSONObject message = new JSONObject();
+			message.put("tweet", aMessage);
+			message.put("consumerKey",System.getenv("TWITTER_CONSUMER_KEY"));
+			message.put("consumerSecret",System.getenv("TWITTER_CONSUMER_SECRET"));
+			message.put("accessToken",System.getenv("TWITTER_ACCESS_TOKEN"));
+			message.put("accessTokenSecret",System.getenv("TWITTER_ACCESS_TOKEN_SECRET"));
+			httppost.setEntity(new StringEntity(message.toString()));
+			client.execute(httppost);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
