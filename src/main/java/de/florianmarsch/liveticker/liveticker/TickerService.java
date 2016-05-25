@@ -29,8 +29,7 @@ public class TickerService {
 
 	Map<String, Tick> map = new HashMap<String, Tick>();
 	Gameday matchday;
-	
-	
+
 	public TickerService(Gameday aMatchday) {
 		matchday = aMatchday;
 		try {
@@ -46,11 +45,11 @@ public class TickerService {
 				tempTick.setEvent(tick.getString("event"));
 				tempTick.setMatchdayNumber(tick.getInt("matchdayNumber"));
 				tempTick.setId(tick.getString("id"));
-				if(tempTick.getMatchdayNumber() == aMatchday.getNumber()){
+				if (tempTick.getMatchdayNumber() == aMatchday.getNumber()) {
 					map.put(tempTick.getExternId(), tempTick);
-					
+
 				}
-				
+
 			}
 
 		} catch (JSONException e) {
@@ -67,9 +66,10 @@ public class TickerService {
 	}
 
 	public String getLiveTickerText() {
-		Integer id = matchday.getNumber() + 5662927;
-		String content = loadFile(
-				"http://feedmonster.iliga.de/feeds/il/de/competitions/1/1271/matchdays/" + id + ".json");
+		Integer id = matchday.getNumber();
+		String url = "http://liveticker-system-api.herokuapp.com/api/ligue/1229/events";
+
+		String content = loadFile(url);
 		return content;
 	}
 
@@ -101,36 +101,22 @@ public class TickerService {
 		List<Tick> eventList = new ArrayList<Tick>();
 		try {
 			JSONObject json = new JSONObject(content);
-			JSONArray kickoffs = json.getJSONArray("kickoffs");
+			JSONArray data = json.getJSONArray("data");
 
-			for (int k = 0; k < kickoffs.length(); k++) {
-				JSONObject element = kickoffs.getJSONObject(k);
-				JSONArray groups = element.getJSONArray("groups");
-				for (int gr = 0; gr < groups.length(); gr++) {
-					JSONObject group = groups.getJSONObject(gr);
-					JSONArray matches = group.getJSONArray("matches");
-					for (int m = 0; m < matches.length(); m++) {
-						JSONObject match = matches.getJSONObject(m);
-						JSONArray goals = match.getJSONArray("goals");
-						for (int go = 0; go < goals.length(); go++) {
-							JSONObject goal = goals.getJSONObject(go);
-							String type = goal.getString("type");
-							String eventId = goal.getString("eventId");
-							String player = goal.getJSONObject("player").getString("name");
+			for (int k = 0; k < data.length(); k++) {
+				JSONObject goal = data.getJSONObject(k);
 
-							String norm = Normalizer.normalize(player, Normalizer.Form.NFD);
-							norm = norm.replaceAll("[^\\p{ASCII}]", "");
+				String type = goal.getString("type");
+				String eventId = goal.getString("id");
+				String player = goal.getString("player");
 
-							Tick e = new Tick();
-							e.setExternId(eventId);
-							e.setEvent(type);
-							e.setName(norm);
-							e.setMatchdayNumber(matchday.getNumber());
-							eventList.add(e);
+				Tick e = new Tick();
+				e.setExternId(eventId);
+				e.setEvent(type);
+				e.setName(player);
+				e.setMatchdayNumber(matchday.getNumber());
+				eventList.add(e);
 
-						}
-					}
-				}
 			}
 
 		} catch (JSONException e) {
@@ -147,7 +133,7 @@ public class TickerService {
 
 			JSONObject tempJSONObject = new JSONObject();
 
-			tempJSONObject.put("externId",aTick.getExternId());
+			tempJSONObject.put("externId", aTick.getExternId());
 			tempJSONObject.put("name", aTick.getName());
 			tempJSONObject.put("event", aTick.getEvent());
 			tempJSONObject.put("matchdayNumber", aTick.getMatchdayNumber());
@@ -174,9 +160,7 @@ public class TickerService {
 	public void delete(Tick aTick) throws IOException {
 		logger.info("delete tick  : " + aTick.getName());
 
-		
-		
-		URL url = new URL("http://fussballmanager.herokuapp.com/Tick/"+aTick.getId());
+		URL url = new URL("http://fussballmanager.herokuapp.com/Tick/" + aTick.getId());
 		HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
 		httpCon.setDoOutput(true);
 		httpCon.setRequestMethod("DELETE");
@@ -184,6 +168,6 @@ public class TickerService {
 		out.write("");
 		out.close();
 		httpCon.getInputStream();
-		
+
 	}
 }
