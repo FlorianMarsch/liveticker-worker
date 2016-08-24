@@ -32,6 +32,9 @@ public class TweetJob implements Job {
 
 		logger.info("execute new turn around and tweet live results");
 		Gameday currentGameDay = Gameday.getCurrentGameDay();
+		if(currentGameDay == null){
+			return;
+		}
 		if (logger.isDebugEnabled()) {
 			logger.debug("detect gameday : " + currentGameDay.getNumber());
 		}
