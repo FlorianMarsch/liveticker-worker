@@ -26,20 +26,20 @@ public class Gameday {
 		this.number = number;
 	}
 	
-	private static String gamedayUrl = "http://feedmonster.iliga.de/feeds/il/de/competitions/1/1271/matchdaysOverview.json";
+	private static String gamedayUrl = "http://football-api.florianmarsch.de/v1/api/league/1/weeks.json";
 
 	public static Gameday getCurrentGameDay() {
 		try {
 			String content = loadFile(gamedayUrl);
-			JSONArray days = new JSONObject(content).getJSONArray("matchdays");
+			JSONArray days = new JSONArray(content);
 
 			for (int i = 0; i < days.length(); i++) {
 				JSONObject tempDay = days.getJSONObject(i);
-				if (tempDay.getBoolean("isCurrentMatchday")) {
+				if (tempDay.getBoolean("active")) {
 
-					String temp= tempDay.getString("name").split(". ")[0];
+					Integer number= tempDay.getInt("number");
 					Gameday response = new Gameday();
-					response.setNumber(Integer.valueOf(temp));
+					response.setNumber(number);
 					if (logger.isDebugEnabled()) {
 						logger.debug("run gameday"+response.getNumber());
 					}
