@@ -66,8 +66,7 @@ public class TickerService {
 	}
 
 	public String getLiveTickerText() {
-		Integer id = matchday.getNumber();
-		String url = "http://liveticker-system-api.herokuapp.com/api/ligue/1229/events";
+		String url = "http://football-api.florianmarsch.de/v1/api/league/1/week/live.json";
 
 		String content = loadFile(url);
 		return content;
@@ -100,8 +99,7 @@ public class TickerService {
 
 		List<Tick> eventList = new ArrayList<Tick>();
 		try {
-			JSONObject json = new JSONObject(content);
-			JSONArray data = json.getJSONArray("data");
+			JSONArray data = new JSONArray(content);
 
 			for (int k = 0; k < data.length(); k++) {
 				JSONObject goal = data.getJSONObject(k);
