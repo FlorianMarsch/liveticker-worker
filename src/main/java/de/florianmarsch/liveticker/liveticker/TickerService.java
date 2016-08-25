@@ -25,7 +25,7 @@ import de.florianmarsch.liveticker.TweetJob;
 import de.florianmarsch.liveticker.gameday.Gameday;
 
 public class TickerService {
-	final static Logger logger = LoggerFactory.getLogger(TweetJob.class);
+	final static Logger logger = LoggerFactory.getLogger(TickerService.class);
 
 	Map<String, Tick> map = new HashMap<String, Tick>();
 	Gameday matchday;
