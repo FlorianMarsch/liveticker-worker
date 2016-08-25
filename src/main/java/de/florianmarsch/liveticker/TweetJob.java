@@ -70,7 +70,7 @@ public class TweetJob implements Job {
 		PushbulletConnection push = new PushbulletConnection();
 		for (Tweet tweet : mc.getTweets()) {
 			String message = tweet.getText();
-			con.tweet(message);
+			con.tweet(tweet);
 			push.send(message);
 		}
 		logger.info("end processing");
