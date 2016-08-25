@@ -47,6 +47,7 @@ public class LiveTicker {
 				e.setByeGame(goal.getBoolean("bye"));
 				e.setGameday(gameday);
 				e.setCreationDate(new Date());
+				e.setMatch(goal.getString("match"));
 				eventList.add(e);
 
 			}

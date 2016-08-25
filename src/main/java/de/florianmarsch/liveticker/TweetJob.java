@@ -16,9 +16,9 @@ import de.florianmarsch.liveticker.liveticker.Event;
 import de.florianmarsch.liveticker.liveticker.LiveTicker;
 import de.florianmarsch.liveticker.mail.Mail;
 import de.florianmarsch.liveticker.pushbullet.PushbulletConnection;
-import de.florianmarsch.liveticker.twitter.TweetCreator;
 import de.florianmarsch.liveticker.twitter.Connection;
 import de.florianmarsch.liveticker.twitter.Tweet;
+import de.florianmarsch.liveticker.twitter.TweetCreator;
 
 public class TweetJob implements Job {
 
@@ -63,6 +63,8 @@ public class TweetJob implements Job {
 			logger.info("quit processing");
 			return;
 		}
+		
+		
 		TweetCreator mc = new TweetCreator(events);
 		Connection con = new Connection();
 		PushbulletConnection push = new PushbulletConnection();

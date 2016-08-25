@@ -6,6 +6,7 @@ public class Tweet {
 
 	private String text;
 	private String id;
+	private String image;
 
 	public Tweet(Event aEvent) {
 
@@ -17,6 +18,8 @@ public class Tweet {
 		String tag = aEvent.getGameTag();
 		String result = aEvent.getResult();
 		id = aEvent.getId();
+		
+		setImage("http://fussballmanager.herokuapp.com/screen/"+aEvent.getMatch());
 
 		if (type.equalsIgnoreCase("Goal")) {
 			text = mv.getGoal() + " " + name + " trifft für " + owner
@@ -63,6 +66,14 @@ public class Tweet {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
 	}
 
 }
