@@ -36,14 +36,17 @@ public class Tweet {
 		if (aEvent.getFakeGame()) {
 			text = name + " trifft auf dem Übungsplatz von " + owner
 					+" #comunioLDC " + tag ;
+			setImage(null);
 		}
 		if (aEvent.getByeGame()) {
 			text = name + " ist beflügelt durch das Freilos von " + owner
 					+" #comunioLDC " + tag ;
+			setImage(null);
 		}
 		if (type.equalsIgnoreCase("Error")) {
 			text = "Fehlalarm : Es war doch nicht "+ name + " für " + owner
 					+ " #comunioLDC " + tag ;
+			setImage(null);
 		}
 	}
 
