@@ -66,7 +66,7 @@ public class TickerService {
 	}
 
 	public String getLiveTickerText() {
-		String url = "http://football-api.florianmarsch.de/v1/api/league/1/week/live.json";
+		String url = "http://football-api.florianmarsch.de/v1/api/league/1/week/"+matchday.getNumber()+"/events.json";
 
 		String content = loadFile(url);
 		return content;
