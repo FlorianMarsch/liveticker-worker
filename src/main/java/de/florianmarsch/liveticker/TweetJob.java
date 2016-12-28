@@ -1,5 +1,8 @@
 package de.florianmarsch.liveticker;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -72,6 +75,18 @@ public class TweetJob implements Job {
 			String message = tweet.getText();
 			con.tweet(tweet);
 			push.send(message);
+			
+		}
+		if(!mc.getTweets().isEmpty()){
+			try {
+				new URL("http://football-api.florianmarsch.de/leaderboard_download.php").openConnection().getContent();
+			} catch (MalformedURLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		logger.info("end processing");
 	}
