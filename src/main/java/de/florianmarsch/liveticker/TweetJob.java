@@ -32,6 +32,8 @@ public class TweetJob implements Job {
 		EventService service = new EventService();
 		LiveTicker liveTicker = new LiveTicker();
 		SwitchService switchService = new SwitchService();
+		Connection con = new Connection();
+		PushbulletConnection push = new PushbulletConnection();
 
 		logger.info("execute new turn around and tweet live results");
 		Gameday currentGameDay = Gameday.getCurrentGameDay();
@@ -45,6 +47,14 @@ public class TweetJob implements Job {
 		Integer lastGameDay = switchService.getLastGameDay(currentGameDay);
 		Boolean gameDayChanged = !currentGameDay.isSame(lastGameDay);
 		if(gameDayChanged){
+			
+			 // todo : tweet leaderboard
+			Tweet leaderBoardTweet = new Tweet(null);
+			leaderBoardTweet.setText("Spieltag "+lastGameDay+" ist in der #comunioLDC vorbei. Das sind die Ergebnisse :");
+			leaderBoardTweet.setImage("http://football-api.florianmarsch.de/leaderboard.png");
+			
+			con.tweet(leaderBoardTweet);
+			
 			Mail mail = new Mail(lastGameDay);
 			mail.send();
 		}
@@ -69,8 +79,6 @@ public class TweetJob implements Job {
 		
 		
 		TweetCreator mc = new TweetCreator(events);
-		Connection con = new Connection();
-		PushbulletConnection push = new PushbulletConnection();
 		for (Tweet tweet : mc.getTweets()) {
 			String message = tweet.getText();
 			con.tweet(tweet);

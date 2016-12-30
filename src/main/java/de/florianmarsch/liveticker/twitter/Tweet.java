@@ -9,6 +9,9 @@ public class Tweet {
 	private String image;
 
 	public Tweet(Event aEvent) {
+		if(aEvent == null){
+			return;
+		}
 
 		MessageVariete mv = new MessageVariete();
 
