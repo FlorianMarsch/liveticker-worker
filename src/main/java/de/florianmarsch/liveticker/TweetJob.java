@@ -52,6 +52,7 @@ public class TweetJob implements Job {
 			Tweet leaderBoardTweet = new Tweet(null);
 			leaderBoardTweet.setText("Spieltag "+lastGameDay+" ist in der #comunioLDC vorbei. Das sind die Ergebnisse :");
 			leaderBoardTweet.setImage("http://football-api.florianmarsch.de/leaderboard.png");
+			leaderBoardTweet.setIsImage(Boolean.TRUE);
 			
 			con.tweet(leaderBoardTweet);
 			

@@ -7,6 +7,7 @@ public class Tweet {
 	private String text;
 	private String id;
 	private String image;
+	private Boolean isImage = Boolean.FALSE;
 
 	public Tweet(Event aEvent) {
 		if(aEvent == null){
@@ -80,6 +81,14 @@ public class Tweet {
 
 	public void setImage(String image) {
 		this.image = image;
+	}
+
+	public Boolean getIsImage() {
+		return isImage;
+	}
+
+	public void setIsImage(Boolean isImage) {
+		this.isImage = isImage;
 	}
 
 }

@@ -24,6 +24,7 @@ public class Connection {
 			JSONObject message = new JSONObject();
 			message.put("tweet", aMessage.getText());
 			message.put("image", aMessage.getImage());
+			message.put("isImage", aMessage.getIsImage());
 			message.put("consumerKey",System.getenv("TWITTER_CONSUMER_KEY"));
 			message.put("consumerSecret",System.getenv("TWITTER_CONSUMER_SECRET"));
 			message.put("accessToken",System.getenv("TWITTER_ACCESS_TOKEN"));
