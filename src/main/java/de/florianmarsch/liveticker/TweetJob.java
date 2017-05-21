@@ -18,7 +18,6 @@ import de.florianmarsch.liveticker.gameday.SwitchService;
 import de.florianmarsch.liveticker.liveticker.Event;
 import de.florianmarsch.liveticker.liveticker.LiveTicker;
 import de.florianmarsch.liveticker.mail.Mail;
-import de.florianmarsch.liveticker.pushbullet.PushbulletConnection;
 import de.florianmarsch.liveticker.twitter.Connection;
 import de.florianmarsch.liveticker.twitter.Tweet;
 import de.florianmarsch.liveticker.twitter.TweetCreator;
@@ -27,66 +26,62 @@ public class TweetJob implements Job {
 
 	final static Logger logger = LoggerFactory.getLogger(TweetJob.class);
 
-
 	public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
 		EventService service = new EventService();
 		LiveTicker liveTicker = new LiveTicker();
 		SwitchService switchService = new SwitchService();
 		Connection con = new Connection();
-		PushbulletConnection push = new PushbulletConnection();
 
 		logger.info("execute new turn around and tweet live results");
 		Gameday currentGameDay = Gameday.getCurrentGameDay();
-		if(currentGameDay == null){
+		if (currentGameDay == null) {
 			return;
 		}
 		if (logger.isDebugEnabled()) {
-			logger.debug("detect gameday : " + currentGameDay.getNumber());
+			logger.debug("detect gameday : " + currentGameDay.getGameday());
 		}
-		
+
 		Integer lastGameDay = switchService.getLastGameDay(currentGameDay);
 		Boolean gameDayChanged = !currentGameDay.isSame(lastGameDay);
-		if(gameDayChanged){
-			
-			 // todo : tweet leaderboard
+		if (gameDayChanged) {
+
+			// todo : tweet leaderboard
 			Tweet leaderBoardTweet = new Tweet(null);
-			leaderBoardTweet.setText("Spieltag "+lastGameDay+" ist in der #comunioLDC vorbei. Das sind die Ergebnisse :");
+			leaderBoardTweet
+					.setText("Spieltag " + lastGameDay + " ist in der #comunioLDC vorbei. Das sind die Ergebnisse :");
 			leaderBoardTweet.setImage("http://football-api.florianmarsch.de/leaderboard.png");
 			leaderBoardTweet.setIsImage(Boolean.TRUE);
-			
+
 			con.tweet(leaderBoardTweet);
-			
+
 			Mail mail = new Mail(lastGameDay);
 			mail.send();
 		}
-		
+
 		Set<Event> liveTickerEvents = liveTicker.getGoals(currentGameDay);
 		if (logger.isDebugEnabled()) {
 			logger.debug("recive " + liveTickerEvents.size() + " Events");
 		}
 		Set<Event> newOnes = service.saveAndReturnNewEvents(liveTickerEvents);
 		logger.info("filter " + newOnes.size() + " new Events");
-		Set<Event> lostOnes = service.deleteAndReturnLostEvents(liveTickerEvents,currentGameDay);
+		Set<Event> lostOnes = service.deleteAndReturnLostEvents(liveTickerEvents, currentGameDay);
 		logger.info("find " + lostOnes.size() + " wrong Events");
-		
+
 		Set<Event> events = new HashSet<Event>();
 		events.addAll(newOnes);
 		events.addAll(lostOnes);
-		
+
 		if (events.isEmpty()) {
 			logger.info("quit processing");
 			return;
 		}
-		
-		
+
 		TweetCreator mc = new TweetCreator(events);
 		for (Tweet tweet : mc.getTweets()) {
 			String message = tweet.getText();
 			con.tweet(tweet);
-			push.send(message);
-			
 		}
-		if(!mc.getTweets().isEmpty()){
+		if (!mc.getTweets().isEmpty()) {
 			try {
 				new URL("http://football-api.florianmarsch.de/leaderboard_download.php").openConnection().getContent();
 			} catch (MalformedURLException e) {

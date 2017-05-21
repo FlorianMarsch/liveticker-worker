@@ -27,11 +27,11 @@ public class SwitchService {
 			if(find != null){
 				response = find.getNumber();
 			}else{
-				response = aGameDay.getNumber();
+				response = aGameDay.getGameday();
 				find = new LastGameDay();
 				find.setId("LastGameDay");
 			}
-			find.setNumber(aGameDay.getNumber());
+			find.setNumber(aGameDay.getGameday());
 			em.persist(find);
 			
 			transaction.commit();

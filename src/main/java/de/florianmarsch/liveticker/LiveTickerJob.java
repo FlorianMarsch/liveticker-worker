@@ -1,9 +1,7 @@
 package de.florianmarsch.liveticker;
 
-import java.io.IOException;
 import java.util.List;
 
-import org.json.JSONException;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -27,7 +25,7 @@ public class LiveTickerJob implements Job {
 			return;
 		}
 		if (logger.isDebugEnabled()) {
-			logger.debug("detect gameday : " + currentGameDay.getNumber());
+			logger.debug("detect gameday : " + currentGameDay.getGameday());
 		}
 		TickerService service = new TickerService(currentGameDay);
 		List<Tick> liveTickerEvents = service.getLiveTickerEvents();

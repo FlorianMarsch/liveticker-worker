@@ -1,27 +1,22 @@
 package de.florianmarsch.liveticker.liveticker;
 
-import java.io.BufferedInputStream;
-import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
-import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.florianmarsch.liveticker.TweetJob;
 import de.florianmarsch.liveticker.gameday.Gameday;
 
 public class TickerService {
@@ -45,7 +40,7 @@ public class TickerService {
 				tempTick.setEvent(tick.getString("event"));
 				tempTick.setMatchdayNumber(tick.getInt("matchdayNumber"));
 				tempTick.setId(tick.getString("id"));
-				if (tempTick.getMatchdayNumber() == aMatchday.getNumber()) {
+				if (tempTick.getMatchdayNumber() == aMatchday.getGameday()) {
 					map.put(tempTick.getExternId(), tempTick);
 
 				}
@@ -61,38 +56,20 @@ public class TickerService {
 	}
 
 	public List<Tick> getLiveTickerEvents() {
-		String content = getLiveTickerText();
+		String content = loadFile("http://classic-kader-api.herokuapp.com/api/result/" + matchday.getSeason() + "/"
+				+ matchday.getGameday());
 		return getLiveTickerEvents(content);
 	}
 
-	public String getLiveTickerText() {
-		String url = "http://football-api.florianmarsch.de/v1/api/league/1/week/"+matchday.getNumber()+"/events.json";
+	public String loadFile(String gamedayUrl) {
 
-		String content = loadFile(url);
-		return content;
-	}
-
-	private String loadFile(String url) {
-
-		StringBuffer tempReturn = new StringBuffer();
 		try {
-			URL u = new URL(url);
-			InputStream is = u.openStream();
-			DataInputStream dis = new DataInputStream(new BufferedInputStream(is));
-			String s;
-
-			while ((s = dis.readLine()) != null) {
-				tempReturn.append(s);
-			}
-
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			InputStream is = (InputStream) new URL(gamedayUrl).getContent();
+			return IOUtils.toString(is, "UTF-8");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			throw new RuntimeException("abbruch", e);
 		}
-		return tempReturn.toString();
 	}
 
 	public List<Tick> getLiveTickerEvents(String content) {
@@ -104,15 +81,15 @@ public class TickerService {
 			for (int k = 0; k < data.length(); k++) {
 				JSONObject goal = data.getJSONObject(k);
 
-				String type = goal.getString("type");
+				String type = goal.getString("event");
 				String eventId = goal.getString("id");
-				String player = goal.getString("player");
+				String player = goal.getString("name");
 
 				Tick e = new Tick();
 				e.setExternId(eventId);
 				e.setEvent(type);
 				e.setName(player);
-				e.setMatchdayNumber(matchday.getNumber());
+				e.setMatchdayNumber(matchday.getGameday());
 				eventList.add(e);
 
 			}

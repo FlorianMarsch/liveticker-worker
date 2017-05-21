@@ -93,7 +93,7 @@ public class EventService {
 			}
 			
 			TypedQuery<Event> query = em.createQuery("select x from Event x where x.gameday = :gameday  and not x.id in :list", Event.class);
-			query.setParameter("gameday", currentGameDay.getNumber());
+			query.setParameter("gameday", currentGameDay.getGameday());
 			query.setParameter("list", someIds);
 			
 			List<Event> lost = query.getResultList();

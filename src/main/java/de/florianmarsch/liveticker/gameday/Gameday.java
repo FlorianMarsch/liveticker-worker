@@ -1,83 +1,50 @@
 package de.florianmarsch.liveticker.gameday;
 
-import java.io.BufferedInputStream;
-import java.io.DataInputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.io.IOUtils;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class Gameday {
 
-	final static Logger logger = LoggerFactory.getLogger(Gameday.class);
-	  
-	private int number;
+	private Integer gameday;
+	private String season;
 
-	public int getNumber() {
-		return number;
-	}
-
-	public void setNumber(int number) {
-		this.number = number;
-	}
-	
-	private static String gamedayUrl = "http://football-api.florianmarsch.de/v1/api/league/1/weeks.json";
 
 	public static Gameday getCurrentGameDay() {
 		try {
-			String content = loadFile(gamedayUrl);
-			JSONArray days = new JSONArray(content);
-
-			for (int i = 0; i < days.length(); i++) {
-				JSONObject tempDay = days.getJSONObject(i);
-				if (tempDay.getBoolean("active")) {
-
-					Integer number= tempDay.getInt("number");
-					Gameday response = new Gameday();
-					response.setNumber(number);
-					if (logger.isDebugEnabled()) {
-						logger.debug("run gameday"+response.getNumber());
-					}
-					return response;
-				}
-			}
-
-			return null;
+			String gamedayUrl = "http://classic-kader-api.herokuapp.com/api/currentGameday";
+			InputStream is = (InputStream) new URL(gamedayUrl).getContent();
+			String content = IOUtils.toString(is, "UTF-8");
+			
+			ObjectMapper mapper = new ObjectMapper();
+			return mapper.readValue(content, Gameday.class);
 		} catch (Exception e) {
 			return null;
 		}
 	}
 
-	private static String loadFile(String url) {
-
-		StringBuffer tempReturn = new StringBuffer();
-		try {
-			URL u = new URL(url);
-			InputStream is = u.openStream();
-			DataInputStream dis = new DataInputStream(new BufferedInputStream(
-					is));
-			String s;
-
-			while ((s = dis.readLine()) != null) {
-				tempReturn.append(s);
-			}
-
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return tempReturn.toString();
-	}
-
 	public Boolean isSame(Integer lastGameDay) {
-		return lastGameDay.equals(getNumber());
+		return lastGameDay.equals(getGameday());
 	}
+
+	public String getSeason() {
+		return season;
+	}
+
+	public void setSeason(String season) {
+		this.season = season;
+	}
+
+	public Integer getGameday() {
+		return gameday;
+	}
+
+	public void setGameday(Integer gameday) {
+		this.gameday = gameday;
+	}
+	
+	
 }
