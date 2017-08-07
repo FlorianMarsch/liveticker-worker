@@ -15,7 +15,7 @@ public class Gameday {
 
 	public static Gameday getCurrentGameDay() {
 		try {
-			String gamedayUrl = "http://classic-kader-api.herokuapp.com/api/currentGameday";
+			String gamedayUrl = "http://node-comunio-system-api.herokuapp.com/api/currentGameday";
 			InputStream is = (InputStream) new URL(gamedayUrl).getContent();
 			String content = IOUtils.toString(is, "UTF-8");
 			
