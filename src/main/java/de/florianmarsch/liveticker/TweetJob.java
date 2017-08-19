@@ -59,9 +59,7 @@ public class TweetJob implements Job {
 		}
 
 		Set<Event> liveTickerEvents = liveTicker.getGoals(currentGameDay);
-		if (logger.isDebugEnabled()) {
-			logger.debug("recive " + liveTickerEvents.size() + " Events");
-		}
+			logger.info("recive " + liveTickerEvents.size() + " Events");
 		Set<Event> newOnes = service.saveAndReturnNewEvents(liveTickerEvents);
 		logger.info("filter " + newOnes.size() + " new Events");
 		Set<Event> lostOnes = service.deleteAndReturnLostEvents(liveTickerEvents, currentGameDay);
