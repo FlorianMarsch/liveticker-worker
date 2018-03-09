@@ -28,6 +28,7 @@ public class SlackConnection {
 			message.put("image", aMessage.getImage());
 			message.put("isImage", aMessage.getIsImage());
 			message.put("accessToken",System.getenv("SLACK_TOCKEN"));
+			message.put("channel",System.getenv("SLACK_CHANNEL"));
 			httppost.setEntity(new StringEntity(message.toString()));
 			client.execute(httppost);
 		} catch (Exception e) {
