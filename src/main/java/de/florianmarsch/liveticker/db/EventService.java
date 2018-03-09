@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import de.florianmarsch.liveticker.gameday.Gameday;
 import de.florianmarsch.liveticker.liveticker.Event;
+import de.florianmarsch.liveticker.slack.SlackConnection;
 
 public class EventService {
 
@@ -56,6 +57,7 @@ public class EventService {
 
 				transaction.commit();
 			} catch (Exception e) {
+				new SlackConnection().handleException(e);
 
 				logger.error("Error : " + e.getMessage());
 
@@ -105,7 +107,7 @@ public class EventService {
 			
 			transaction.commit();
 		} catch (Exception e) {
-
+			new SlackConnection().handleException(e);
 			logger.error("Error : " + e.getMessage());
 
 			if (transaction != null && transaction.isActive()) {

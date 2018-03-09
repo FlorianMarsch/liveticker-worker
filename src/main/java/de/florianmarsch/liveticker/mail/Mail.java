@@ -9,6 +9,9 @@ import java.net.URL;
 
 import com.sendgrid.SendGrid;
 import com.sendgrid.SendGrid.Email;
+
+import de.florianmarsch.liveticker.slack.SlackConnection;
+
 import com.sendgrid.SendGridException;
 
 public class Mail {
@@ -35,6 +38,7 @@ public class Mail {
 			SendGrid sendgrid = new SendGrid(name, pw);
 			SendGrid.Response response = sendgrid.send(email);
 		} catch (SendGridException e) {
+			new SlackConnection().handleException(e);
 			e.printStackTrace();
 		}
 	}
@@ -53,9 +57,11 @@ public class Mail {
 			}
 
 		} catch (MalformedURLException e) {
+			new SlackConnection().handleException(e);
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
+			new SlackConnection().handleException(e);
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

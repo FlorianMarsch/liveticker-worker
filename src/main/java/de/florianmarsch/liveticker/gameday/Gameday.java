@@ -7,6 +7,8 @@ import org.apache.commons.io.IOUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import de.florianmarsch.liveticker.slack.SlackConnection;
+
 public class Gameday {
 
 	private Integer gameday;
@@ -22,6 +24,7 @@ public class Gameday {
 			ObjectMapper mapper = new ObjectMapper();
 			return mapper.readValue(content, Gameday.class);
 		} catch (Exception e) {
+			new SlackConnection().handleException(e);
 			return null;
 		}
 	}

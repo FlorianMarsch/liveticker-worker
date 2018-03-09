@@ -6,6 +6,8 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.json.JSONObject;
 
+import de.florianmarsch.liveticker.slack.SlackConnection;
+
 public class Connection {
 
 	private CloseableHttpClient client;
@@ -32,6 +34,7 @@ public class Connection {
 			httppost.setEntity(new StringEntity(message.toString()));
 			client.execute(httppost);
 		} catch (Exception e) {
+			new SlackConnection().handleException(e);
 			e.printStackTrace();
 		}
 	}

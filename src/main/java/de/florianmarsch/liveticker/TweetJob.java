@@ -86,9 +86,11 @@ public class TweetJob implements Job {
 			try {
 				new URL("http://football-api.florianmarsch.de/leaderboard_download.php").openConnection().getContent();
 			} catch (MalformedURLException e) {
+				new SlackConnection().handleException(e);
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e) {
+				new SlackConnection().handleException(e);
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}

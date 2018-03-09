@@ -1,5 +1,8 @@
 package de.florianmarsch.liveticker.slack;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -18,6 +21,27 @@ public class SlackConnection {
 	
 	}
 	
+	
+	public void handleException(Exception anException) {
+		try {
+			StringWriter sw = new StringWriter();
+			PrintWriter pw = new PrintWriter(sw);
+			anException.printStackTrace(pw);
+			String errorMessage = sw.toString();
+			
+			
+			HttpPost httppost = new HttpPost("http://social-system-api.herokuapp.com/api/slack");
+			httppost.setHeader("Content-Type", "application/json");
+			JSONObject message = new JSONObject();
+			message.put("tweet",errorMessage);
+			message.put("accessToken",System.getenv("SLACK_TOCKEN"));
+			message.put("channel","#error");
+			httppost.setEntity(new StringEntity(message.toString()));
+			client.execute(httppost);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 	public void tweet(Tweet aMessage){
 		try {

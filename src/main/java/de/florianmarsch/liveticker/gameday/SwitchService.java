@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.florianmarsch.liveticker.db.EmFactory;
+import de.florianmarsch.liveticker.slack.SlackConnection;
 
 public class SwitchService {
 
@@ -36,7 +37,7 @@ public class SwitchService {
 			
 			transaction.commit();
 		} catch (Exception e) {
-
+			new SlackConnection().handleException(e);
 			logger.error("Error : " + e.getMessage());
 
 			if (transaction != null && transaction.isActive()) {

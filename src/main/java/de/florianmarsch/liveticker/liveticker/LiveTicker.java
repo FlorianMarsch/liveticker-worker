@@ -13,6 +13,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import de.florianmarsch.liveticker.gameday.Gameday;
+import de.florianmarsch.liveticker.slack.SlackConnection;
 
 public class LiveTicker {
 
@@ -55,9 +56,11 @@ public class LiveTicker {
 			}
 
 		} catch (JSONException e) {
+			new SlackConnection().handleException(e);
 			e.printStackTrace();
 			throw new RuntimeException("Abbruch", e);
 		} catch (IOException e1) {
+			new SlackConnection().handleException(e1);
 			e1.printStackTrace();
 			throw new RuntimeException("Abbruch", e1);
 		}
