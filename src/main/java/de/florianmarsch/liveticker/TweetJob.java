@@ -18,6 +18,7 @@ import de.florianmarsch.liveticker.gameday.SwitchService;
 import de.florianmarsch.liveticker.liveticker.Event;
 import de.florianmarsch.liveticker.liveticker.LiveTicker;
 import de.florianmarsch.liveticker.mail.Mail;
+import de.florianmarsch.liveticker.slack.SlackConnection;
 import de.florianmarsch.liveticker.twitter.Connection;
 import de.florianmarsch.liveticker.twitter.Tweet;
 import de.florianmarsch.liveticker.twitter.TweetCreator;
@@ -31,6 +32,7 @@ public class TweetJob implements Job {
 		LiveTicker liveTicker = new LiveTicker();
 		SwitchService switchService = new SwitchService();
 		Connection con = new Connection();
+		SlackConnection slack = new SlackConnection();
 
 		logger.info("execute new turn around and tweet live results");
 		Gameday currentGameDay = Gameday.getCurrentGameDay();
@@ -53,6 +55,7 @@ public class TweetJob implements Job {
 			leaderBoardTweet.setIsImage(Boolean.TRUE);
 
 			con.tweet(leaderBoardTweet);
+			slack.tweet(leaderBoardTweet);
 
 			Mail mail = new Mail(lastGameDay);
 			mail.send();
@@ -76,8 +79,8 @@ public class TweetJob implements Job {
 
 		TweetCreator mc = new TweetCreator(events);
 		for (Tweet tweet : mc.getTweets()) {
-			String message = tweet.getText();
 			con.tweet(tweet);
+			slack.tweet(tweet);
 		}
 		if (!mc.getTweets().isEmpty()) {
 			try {
